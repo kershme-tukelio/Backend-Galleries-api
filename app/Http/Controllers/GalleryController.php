@@ -15,7 +15,8 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $galleries = Gallery::all();
+        $galleries = Gallery::with('images', 'comments')
+            ->get();
 
         return response()->json($galleries);
     }
@@ -42,7 +43,8 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        $gallery = Gallery::findOrFail($id);
+        $gallery = Gallery::with('images', 'comments')
+            ->findOrFail($id);
 
         return response()->json($gallery);
     }
@@ -51,7 +53,9 @@ class GalleryController extends Controller
      * Display the specified listing of the resource.
      */
     public function getMyGalleries($userId) {
-        $galleries = Gallery::where('user_id', $userId)->get();
+        $galleries = Gallery::where('user_id', $userId)
+            ->with('images', 'comments')
+            ->get();
 
         return response()->json($galleries);
     }

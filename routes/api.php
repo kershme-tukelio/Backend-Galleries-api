@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,9 @@ Route::delete('/galleries/{id}', [GalleryController::class, 'destroy']);
 
 Route::post('/galleries/{id}', [CommentController::class, 'store']);
 Route::delete('/galleries/{id}', [CommentController::class, 'destroy']);
+
+Route::post('/register', [AuthController::class, 'register'])->middleware('guest:api');
+Route::post('/login', [AuthController::class, 'login'])->middleware('guest:api');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
+Route::get('/me', [AuthController::class, 'me'])->middleware('auth:api');
+Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
