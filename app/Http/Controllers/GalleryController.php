@@ -30,9 +30,9 @@ class GalleryController extends Controller
     public function store(GalleryRequest $request)
     {
         $data = $request->validated();
-        $newGallery = Gallery::create($data);
+        $gallery = auth()->user()->galleries()->create($data);
 
-        return response()->json($newGallery);
+        return response()->json($gallery);
     }
 
     /**
@@ -52,8 +52,8 @@ class GalleryController extends Controller
     /**
      * Display the specified listing of the resource.
      */
-    public function getMyGalleries($userId) {
-        $galleries = Gallery::where('user_id', $userId)
+    public function getMyGalleries() {
+        $galleries = auth()->user()->galleries()
             ->with('images', 'comments')
             ->get();
 
