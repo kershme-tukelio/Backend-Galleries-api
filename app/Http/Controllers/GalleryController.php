@@ -13,9 +13,12 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $galleries = Gallery::with('images', 'comments')
+        $title = $request->query('title', '');
+        $galleries = Gallery::search($title)
+            ->with('user', 'images', 'comments')
+            // ->paginate(10)
             ->get();
 
         return response()->json($galleries);
@@ -55,6 +58,7 @@ class GalleryController extends Controller
     public function getMyGalleries() {
         $galleries = auth()->user()->galleries()
             ->with('images', 'comments')
+            // ->paginate(10)
             ->get();
 
         return response()->json($galleries);

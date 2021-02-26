@@ -22,4 +22,8 @@ class Gallery extends Model
     public function comments() {
         return $this->hasMany(Comment::class);
     }
+
+    public static function search($title = "") {
+        return self::where("title", "LIKE", "%$title%");
+    }
 }
